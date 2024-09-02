@@ -6,6 +6,7 @@ import com.springboot.registration_login_system.entity.User;
 import com.springboot.registration_login_system.repository.RoleRepository;
 import com.springboot.registration_login_system.repository.UserRepository;
 import com.springboot.registration_login_system.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -17,9 +18,12 @@ public class UserServiceIMPL implements UserService {
 UserRepository userRepository;
 RoleRepository roleRepository;
 
-    public UserServiceIMPL(UserRepository userRepository, RoleRepository roleRepository) {
+private PasswordEncoder passwordEncoder;
+
+    public UserServiceIMPL(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -28,7 +32,7 @@ RoleRepository roleRepository;
         newUser.setName(user.getFirstName()+ " " + user.getLastName());
         newUser.setEmail(user.getEmail());
         //encrypt the password using spring security
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role newRole = roleRepository.findByName("ROLE_ADMIN");
         if(newRole == null){

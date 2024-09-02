@@ -22,8 +22,9 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
-//To handle home page request
 
+
+    //To handle home page request
     @GetMapping("/index")
     public String home(){
         return "index";
@@ -65,5 +66,10 @@ public class AuthController {
         return "users";
     }
 
+    //To handle the login request
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
 
 }
